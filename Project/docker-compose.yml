@@ -2,19 +2,20 @@ version: '3'
 services:
   app:
     build: ./app
-    container_name: web_app
     environment:
       - FLASK_ENV=development
       - MYSQL_HOST=db
       - MYSQL_USER=root
       - MYSQL_PASSWORD=password
       - MYSQL_DB=myapp_db
-    ports:
-      - "5000:5000"
+    # ports:
+    #   - "5000:5000"
     depends_on:
       - db
     networks:
       - app_network
+    deploy:
+      replicas: 3
 
   db:
     image: mysql:5.7

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import mysql.connector
 
 app = Flask(__name__)
@@ -17,22 +17,61 @@ def get_db_connection():
 def home():
     return render_template('login.html')
 
-@app.route('/login', methods=['POST'])
-def login():
-    username = request.form['username']
-    password = request.form['password']
+@app.route('/error')
+def error_route():
+    raise Exception("This is a test error!")
 
-    # Connect to MySQL and check credentials
+# Endpoint to display comments
+@app.route('/comments_page', methods=['GET'])
+def comments_page():
+    return render_template('comment_form.html') 
+
+
+@app.route('/comments', methods=['POST'])
+def submit_comment():
+    username = request.form['username']
+    comment = request.form['comment']
+    return f"""
+        <h1>Comments</h1>
+        <p><strong>{username}</strong>: {comment}</p>
+        <a href="/">Back</a>
+    """
+
+@app.route('/profile', methods=['GET'])
+def profile():
+    # Insecure Direct Object Reference
+    user_id = request.args.get('user_id')
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
-    
-    cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+
+    # No access control checks
+    cursor.execute(f"SELECT * FROM users WHERE id = {user_id}")  
     user = cursor.fetchone()
 
     connection.close()
 
     if user:
-        return "Login successful"
+        return render_template('profile.html', user=user)
+    else:
+        return "User not found", 404
+
+@app.route('/vulnerable_login', methods=['POST'])
+def vulnerable_login():
+    username = request.form['username']
+    password = request.form['password']
+
+    # Vulnerable to SQL Injection
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    # Unsanitized input leading to SQL Injection vulnerability
+    cursor.execute(f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'")
+    user = cursor.fetchone()
+
+    connection.close()
+
+    if user:
+        return redirect(url_for('profile', user_id=user['id']))  # Redirect to profile page
     else:
         return "Invalid credentials"
 
