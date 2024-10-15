@@ -1,0 +1,23 @@
+1) cd Project
+2) sudo docker-compose up --build --scale app=3
+3) ~/kafka_2.13-3.0.0/bin/zookeeper-server-start.sh ~/kafka_2.13-3.0.0/config/zookeeper.properties
+(Start ZooKeeper)
+4) ~/kafka_2.13-3.0.0/bin/kafka-server-start.sh ~/kafka_2.13-3.0.0/config/server.properties
+(Start Kafka)
+5) sudo service filebeat start
+(Start FileBeat)
+6) spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.0 spark/log_preprocessing.py
+(Execute PySpark Script)
+7) ./bin/logstash -f /home/mekky/Project/logstash/transfer-log.conf
+(Start Logstash)
+
+
+Note:
+1. Checking Topic Kafka:
+	1.1 cd kafka_2.13-3.0.0/bin
+	1.2 ./kafka-topics.sh --list --bootstrap-server localhost:9092
+2. Modify Beat Configuration file:
+	2.1 nano /etc/filebeat/filebeat.yml
+3. Kafka Create Topic:
+	3.1 ./kafka-topics.sh --create --topic nginx-logs --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+
