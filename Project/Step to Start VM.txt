@@ -8,8 +8,9 @@
 (Start FileBeat)
 6) spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.0 spark/log_preprocessing.py
 (Execute PySpark Script)
-7) ./bin/logstash -f /home/mekky/Project/logstash/transfer-log.conf
+7) sudo /usr/share/logstash/bin/logstash -f /home/mekky/Project/logstash/transfer-log.conf
 (Start Logstash)
+ **Note** Every time to start pipeline need to recreate the checkpoint directory and delete output.log
 
 
 Note:
@@ -21,3 +22,5 @@ Note:
 3. Kafka Create Topic:
 	3.1 ./kafka-topics.sh --create --topic nginx-logs --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
 
+4. Validate Logstash Configuration:
+	logstash -f D:\ELK_stack\logstash-8.15.2\config\logstash-sample.conf --config.test_and_exit
