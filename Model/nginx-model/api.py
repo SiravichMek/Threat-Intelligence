@@ -24,18 +24,18 @@ except Exception as e:
 def parse_log_entry(log):
     try:
         # Split the log entry into parts by whitespace
-        parts = log.split(" ")
-
+        parts = log.split("|")
+        # 172.18.0.1|GET|/profile?user_id=3|200|532|-|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0
         # Ensure we have at least the required 6 elements
         if len(parts) < 6:
             raise ValueError("Log entry does not contain enough parts")
 
-        ip = parts[2]
-        method = parts[5]
-        url = parts[6]
-        status = parts[7]
-        size = parts[8]
-        referer = parts[9] if parts[9] != '-' else '-'
+        ip = parts[0]
+        method = parts[1]
+        url = parts[2]
+        status = parts[3]
+        size = parts[4]
+        referer = parts[5] if parts[5] != '-' else '-'
 
         # Create a structured log entry string for model input
         structured_log = f"{ip} {method} {url} {status} {size} {referer}"
