@@ -10,7 +10,11 @@
 (Start Logstash)
 7) spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.0 spark/log_preprocessing.py
 (Execute PySpark Script)
- **Note** Every time to start pipeline need to recreate the checkpoint directory and delete output.log
+8) sudo tcpdump -i enp0s3 icmp and dst 192.168.1.40 -tttt > /home/mekky/Project/logs/preprocessed/firewall/output.log
+(Activate tcpdump)
+
+ **Note** Every time to start pipeline need to recreate the checkpoint directory, re-assign IP in etc/logstash/conf.d
+ and delete output.log
 
 
 Note:
@@ -34,4 +38,7 @@ beginning
 	sudo tail -f /var/log/filebeat/filebeat
 9. Logstash Pipeline Check:
 	sudo tail -f /var/log/logstash/logstash-plain.log
+10. SQLi Password Testing:
+	Username Input: admin
+	Password Input: ' OR '1'='1
 

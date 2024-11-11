@@ -1,0 +1,84 @@
+Nginx Response Log:
+{
+    "@timestamp" => 2024-11-11T06:25:22.716354800Z,
+     "log_entry" => "172.18.0.1|GET|/profile?user_id=1|200|528|http://localhost/|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0",
+           "log" => "172.18.0.1|GET|/profile?user_id=1|200|528|http://localhost/|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0",
+    "prediction" => "normal",
+    "event_type" => "nginx_log",
+         "event" => {
+        "original" => "nginx_log|172.18.0.1|GET|/profile?user_id=1|200|528|http://localhost/|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0"
+    },
+          "tags" => [
+        [0] "_grokparsefailure"
+    ],
+      "@version" => "1",
+       "message" => "nginx_log|172.18.0.1|GET|/profile?user_id=1|200|528|http://localhost/|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0"
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+{
+    "@timestamp" => 2024-11-11T06:30:16.507252500Z,
+     "log_entry" => "172.18.0.1|GET|/profile?user_id=2|200|528|-|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0",
+           "log" => "172.18.0.1|GET|/profile?user_id=2|200|528|-|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0",
+    "prediction" => "bypass",
+    "event_type" => "nginx_log",
+         "event" => {
+        "original" => "nginx_log|172.18.0.1|GET|/profile?user_id=2|200|528|-|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0"
+    },
+          "tags" => [
+        [0] "_grokparsefailure"
+    ],
+      "@version" => "1",
+       "message" => "nginx_log|172.18.0.1|GET|/profile?user_id=2|200|528|-|Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0"
+}
+
+____________________________________________________________________________________________________________________________________________________________________________
+
+MySQL Response Log:
+{
+    "@timestamp" => 2024-11-11T06:25:23.028797100Z,
+     "log_entry" => "SELECT * FROM users WHERE username = 'admin' AND password = 'password'",
+           "log" => "SELECT * FROM users WHERE username = 'admin' AND password = 'password'",
+    "prediction" => "Normal",
+    "event_type" => "mysql_log",
+         "event" => {
+        "original" => "mysql_log|SELECT * FROM users WHERE username = 'admin' AND password = 'password'"
+    },
+          "tags" => [
+        [0] "_grokparsefailure"
+    ],
+      "@version" => "1",
+       "message" => "mysql_log|SELECT * FROM users WHERE username = 'admin' AND password = 'password'"
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+{
+    "@timestamp" => 2024-11-11T06:32:09.619879100Z,
+     "log_entry" => "SELECT * FROM users WHERE username = 'admin' AND password = '' OR '1'='1'",
+           "log" => "SELECT * FROM users WHERE username = 'admin' AND password = '' OR '1'='1'",
+    "prediction" => "SQL Injection",
+    "event_type" => "mysql_log",
+         "event" => {
+        "original" => "mysql_log|SELECT * FROM users WHERE username = 'admin' AND password = '' OR '1'='1'"
+    },
+          "tags" => [
+        [0] "_grokparsefailure"
+    ],
+      "@version" => "1",
+       "message" => "mysql_log|SELECT * FROM users WHERE username = 'admin' AND password = '' OR '1'='1'"
+}
+
+____________________________________________________________________________________________________________________________________________________________________________
+
+Bug Log:
+{
+    "@timestamp" => 2024-11-11T06:32:08.357640Z,
+          "tags" => [
+        [0] "_grokparsefailure"
+    ],
+      "@version" => "1",
+       "message" => "%{formatted_message}",
+         "event" => {
+        "original" => "%{formatted_message}"
+    }
+}
