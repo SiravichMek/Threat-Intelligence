@@ -1,0 +1,85 @@
+PUT _ingest/pipeline/mitre_mapping_pipeline
+{
+  "description": "Pipeline to map predictions to MITRE ATT&CK framework",
+  "processors": [
+    {
+      "script": {
+        "source": """
+          if (ctx.prediction == 'SQL Injection') {
+              ctx.mitre_tactics = 'Initial Access';
+              ctx.mitre_technique_name = 'Exploit Public-Facing Application';
+              ctx.mitre_id = 'T1190';
+              ctx.mitre_mitigations_id = 'M1048, M1050, M1030, M1026, M1051, M1016';
+              ctx.mitre_url = 'https://attack.mitre.org/techniques/T1190/';
+          } else if (ctx.prediction == 'Cross-Site Scripting') {
+              ctx.mitre_tactics = 'Execution';
+              ctx.mitre_technique_name = 'User Execution';
+              ctx.mitre_id = 'T1204';
+              ctx.mitre_mitigations_id = 'M1040, M1038, M1031, M1021, M1017';
+              ctx.mitre_url = 'https://attack.mitre.org/techniques/T1204/';
+          } else if (ctx.prediction == 'bypass') {
+              ctx.mitre_tactics = 'Defense Evasion, Persistence, Privilege Escalation, Initial Access';
+              ctx.mitre_technique_name = 'Valid Accounts';
+              ctx.mitre_id = 'T1078';
+              ctx.mitre_mitigations_id = 'M1036, M1015, M1013, M1027, M1026, M1017, M1018';
+              ctx.mitre_url = 'https://attack.mitre.org/techniques/T1078/';
+          } else if (ctx.prediction == 'brute force') {
+              ctx.mitre_tactics = 'Credential Access';
+              ctx.mitre_technique_name = 'Brute Force';
+              ctx.mitre_id = 'T1110';
+              ctx.mitre_mitigations_id = 'M1036, M1032, M1027, M1018';
+              ctx.mitre_url = 'https://attack.mitre.org/techniques/T1110/';
+          } else if (ctx.prediction == 'Remote Code Execution') {
+              ctx.mitre_tactics = 'Execution';
+              ctx.mitre_technique_name = 'Command and Scripting Interpreter';
+              ctx.mitre_id = 'T1059';
+              ctx.mitre_mitigations_id = 'M1047, M1050, M1026, M1042';
+              ctx.mitre_url = 'https://attack.mitre.org/techniques/T1059/';
+          } else if (ctx.prediction == 'Directory Traversal') {
+              ctx.mitre_tactics = 'Discovery';
+              ctx.mitre_technique_name = 'File and Directory Discovery';
+              ctx.mitre_id = 'T1083';
+              ctx.mitre_mitigations_id = 'M1049, M1047';
+              ctx.mitre_url = 'https://attack.mitre.org/techniques/T1083/';
+          } else if (ctx.prediction == 'Denial of Service') {
+              ctx.mitre_tactics = 'Impact';
+              ctx.mitre_technique_name = 'Network Denial of Service';
+              ctx.mitre_id = 'T1499';
+              ctx.mitre_mitigations_id = 'M1038, M1043, M1037';
+              ctx.mitre_url = 'https://attack.mitre.org/techniques/T1499/';
+          } else if (ctx.prediction == 'Phishing') {
+              ctx.mitre_tactics = 'Initial Access';
+              ctx.mitre_technique_name = 'Phishing';
+              ctx.mitre_id = 'T1566';
+              ctx.mitre_mitigations_id = 'M1031, M1021, M1024, M1052';
+              ctx.mitre_url = 'https://attack.mitre.org/techniques/T1566/';
+          } else if (ctx.prediction == 'Malware Upload') {
+              ctx.mitre_tactics = 'Execution';
+              ctx.mitre_technique_name = 'Malicious File';
+              ctx.mitre_id = 'T1203';
+              ctx.mitre_mitigations_id = 'M1047, M1050, M1041';
+              ctx.mitre_url = 'https://attack.mitre.org/techniques/T1203/';
+          } else if (ctx.prediction == 'Privilege Escalation') {
+              ctx.mitre_tactics = 'Privilege Escalation';
+              ctx.mitre_technique_name = 'Exploit OS Vulnerability';
+              ctx.mitre_id = 'T1068';
+              ctx.mitre_mitigations_id = 'M1038, M1031, M1050';
+              ctx.mitre_url = 'https://attack.mitre.org/techniques/T1068/';
+          } else if (ctx.prediction == 'Normal' || ctx.prediction == 'normal') {
+              ctx.mitre_tactics = null;
+              ctx.mitre_technique_name = null;
+              ctx.mitre_id = null;
+              ctx.mitre_mitigations_id = null;
+              ctx.mitre_url = null;
+          } else {
+              ctx.mitre_tactics = 'Unknown';
+              ctx.mitre_technique_name = 'Unknown';
+              ctx.mitre_id = 'Unknown';
+              ctx.mitre_mitigations_id = 'N/A';
+              ctx.mitre_url = 'N/A';
+          }
+        """
+      }
+    }
+  ]
+}
